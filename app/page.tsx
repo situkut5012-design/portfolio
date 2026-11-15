@@ -18,6 +18,9 @@ export default function Home() {
   const [priority, setPriority] = useState<Priority>('medium');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
+  
+  // ★追加：検索キーワードの状態
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const savedTasks = localStorage.getItem('portfolio_tasks');
@@ -77,10 +80,18 @@ export default function Home() {
 
   const remainingCount = tasks.filter((task) => !task.completed).length;
 
+  // ★変更：タブの絞り込み ＋ キーワード検索を同時に行うロジック
   const filteredTasks = tasks.filter((task) => {
-    if (filter === 'active') return !task.completed;
-    if (filter === 'completed') return task.completed;
-    return true;
+    const matchesFilter =
+      filter === 'all'
+        ? true
+        : filter === 'active'
+        ? !task.completed
+        : task.completed;
+
+    const matchesSearch = task.text.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchesFilter && matchesSearch;
   });
 
   const priorityConfig = {
@@ -118,7 +129,7 @@ export default function Home() {
           </p>
         </div>
 
-        {/* ★追加：スキル・経歴ページへ移動するボタン */}
+        {/* スキルページへ移動するボタン */}
         <div className="mb-3">
           <a
             href="/skills"
@@ -132,7 +143,7 @@ export default function Home() {
           </a>
         </div>
 
-        {/* 📁 1日目のHTML版へ移動するボタン */}
+        {/* 1日目のHTML版へ移動するボタン */}
         <div className="mb-6">
           <a
             href="/html-version/index.html"
@@ -150,6 +161,7 @@ export default function Home() {
         <div className={`mt-8 pt-6 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-100'}`}>
           <h2 className={`text-base font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>📝 本日の学習タスク管理</h2>
           
+          {/* タスク追加フォーム */}
           <form onSubmit={addTask} className="flex gap-2 mb-4">
             <input
               type="text"
@@ -182,6 +194,21 @@ export default function Home() {
               追加
             </button>
           </form>
+
+          {/* ★追加：キーワード検索用の入力ボックス */}
+          <div className="mb-4">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="🔍 タスクをキーワード検索..."
+              className={`w-full px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                isDarkMode 
+                  ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                  : 'bg-white border-gray-300 text-gray-800'
+              }`}
+            />
+          </div>
 
           {/* タブ切り替えボタン */}
           <div className="flex gap-1 mb-4 bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
@@ -284,7 +311,7 @@ export default function Home() {
               );
             })}
             {filteredTasks.length === 0 && (
-              <p className={`text-center text-sm py-4 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>表示するタスクはありません。</p>
+              <p className={`text-center text-sm py-4 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>条件に一致するタスクはありません。</p>
             )}
           </ul>
         </div>
