@@ -115,6 +115,49 @@
             message.textContent = messages[randomIndex];
         });
     </script>
-    
+
+<!-- ToDoリスト機能 -->
+    <div class="section" style="margin-top: 30px; border-top: 2px solid #ecf0f1; padding-top: 20px;">
+        <h2>📝 今日の学習タスク管理</h2>
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <input type="text" id="todo-input" placeholder="やることを入力（例：JSの復習）" style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 5px;">
+            <button id="add-btn" style="background: #2ecc71; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold;">追加</button>
+        </div>
+        <ul id="todo-list" style="list-style: none; padding: 0;"></ul>
+    </div>
+
+    <script>
+        const todoInput = document.getElementById('todo-input');
+        const addBtn = document.getElementById('add-btn');
+        const todoList = document.getElementById('todo-list');
+
+        addBtn.addEventListener('click', () => {
+            const text = todoInput.value.trim();
+            if (text === '') return; // 空欄なら何もしない
+
+            // 新しいリスト項目（li）と削除ボタンをJavaScriptで生成
+            const li = document.createElement('li');
+            li.style.cssText = 'display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; padding: 8px 12px; margin-bottom: 8px; border-radius: 5px; border-left: 4px solid #2ecc71;';
+            
+            const span = document.createElement('span');
+            span.textContent = text;
+
+            const delBtn = document.createElement('button');
+            delBtn.textContent = '完了';
+            delBtn.style.cssText = 'background: #e74c3c; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;';
+            
+            // 「完了」ボタンを押したらその項目を消す
+            delBtn.addEventListener('click', () => {
+                todoList.removeChild(li);
+            });
+
+            li.appendChild(span);
+            li.appendChild(delBtn);
+            todoList.appendChild(li);
+
+            todoInput.value = ''; // 入力欄を空に戻す
+        });
+    </script>
+
 </body>
 </html>
