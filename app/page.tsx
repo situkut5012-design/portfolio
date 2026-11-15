@@ -76,10 +76,26 @@ export default function Home() {
     setTasks(tasks.filter((task) => !task.completed));
   };
 
+  // ★追加：デモ用のサンプルタスクを一発で投入する関数
+  const addSampleTasks = () => {
+    const samples: Task[] = [
+      { id: Date.now() + 1, text: 'Next.jsのApp Routerの仕組みを理解する', completed: true, priority: 'high' },
+      { id: Date.now() + 2, text: 'TypeScriptの型定義（Type）をマスターする', completed: false, priority: 'high' },
+      { id: Date.now() + 3, text: 'Tailwind CSSでモダンなUIを構築する', completed: false, priority: 'medium' },
+      { id: Date.now() + 4, text: 'Vercelへのデプロイと動作確認を行う', completed: true, priority: 'low' },
+    ];
+    setTasks(samples);
+  };
+
+  // ★追加：すべてのタスクを空にする関数
+  const clearAllTasks = () => {
+    if (confirm('すべてのタスクを削除しますか？')) {
+      setTasks([]);
+    }
+  };
+
   const remainingCount = tasks.filter((task) => !task.completed).length;
   const completedCount = tasks.length - remainingCount;
-
-  // ★追加：進捗率（パーセンテージ）の計算（タスクが0件の場合は0%にする）
   const progressPercent = tasks.length > 0 ? Math.round((completedCount / tasks.length) * 100) : 0;
 
   const filteredTasks = tasks.filter((task) => {
@@ -160,7 +176,27 @@ export default function Home() {
 
         {/* ToDoリスト機能 */}
         <div className={`mt-8 pt-6 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-100'}`}>
-          <h2 className={`text-base font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>📝 本日の学習タスク管理</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className={`text-base font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>📝 本日の学習タスク管理</h2>
+            
+            {/* ★追加：サンプル一括投入 ＆ 全削除ボタン */}
+            <div className="flex gap-2">
+              <button
+                onClick={addSampleTasks}
+                className="text-[11px] bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300 px-2.5 py-1 rounded hover:opacity-80 transition font-semibold"
+              >
+                ✨ サンプル読込
+              </button>
+              {tasks.length > 0 && (
+                <button
+                  onClick={clearAllTasks}
+                  className="text-[11px] bg-red-100 dark:bg-red-900/60 text-red-600 dark:text-red-300 px-2.5 py-1 rounded hover:opacity-80 transition font-semibold"
+                >
+                  全削除
+                </button>
+              )}
+            </div>
+          </div>
           
           {/* タスク追加フォーム */}
           <form onSubmit={addTask} className="flex gap-2 mb-4">
@@ -211,7 +247,7 @@ export default function Home() {
             />
           </div>
 
-          {/* ★追加：進捗率プログレスバーの表示エリア */}
+          {/* 進捗率プログレスバー */}
           <div className={`mb-4 p-3 rounded-lg border ${isDarkMode ? 'bg-gray-700/50 border-gray-600' : 'bg-gray-50 border-gray-200'}`}>
             <div className="flex justify-between items-center text-xs mb-1.5 font-semibold">
               <span className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>達成率: {progressPercent}%</span>
@@ -326,7 +362,7 @@ export default function Home() {
               );
             })}
             {filteredTasks.length === 0 && (
-              <p className={`text-center text-sm py-4 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>条件に一致するタスクはありません。</p>
+              <p className={`text-center text-sm py-4 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>条件に一致するタスクはありません。「✨ サンプル読込」を押してみよう！</p>
             )}
           </ul>
         </div>
