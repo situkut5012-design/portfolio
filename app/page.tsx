@@ -2,7 +2,16 @@
 
 import { useState } from 'react';
 
-// タスクの型定義（TypeScriptらしさの象徴です）
+{/* HTML版へ移動するボタン */}
+<div className="mb-6 text-center">
+  <a
+    href="/portfolio/html-version/" // ※ご自身のGitHubリポジトリ名に合わせて調整
+    className="inline-block bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg text-sm transition shadow-sm"
+  >
+    📁 1日目のHTML/JS版ポートフォリオを見る
+  </a>
+</div>
+
 type Task = {
   id: number;
   text: string;
