@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type Task = {
   id: number;
@@ -10,7 +10,27 @@ type Task = {
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
   const [input, setInput] = useState('');
+
+  // 1. ページがブラウザに表示された瞬間（マウント後）に保存データを読み込む
+  useEffect(() => {
+    const savedTasks = localStorage.getItem('portfolio_tasks');
+    if (savedTasks) {
+      try {
+        setTasks(JSON.parse(savedTasks));
+      } catch (e) {
+        console.error('データの読み込みに失敗しました', e);
+      }
+    }
+    setIsInitialized(true); // 初期化完了フラグを立てる
+  }, []);
+
+  // 2. 初期化が終わったあとに、tasksが変更されたら自動保存する
+  useEffect(() => {
+    if (!isInitialized) return;
+    localStorage.setItem('portfolio_tasks', JSON.stringify(tasks));
+  }, [tasks, isInitialized]);
 
   const addTask = (e: React.FormEvent) => {
     e.preventDefault();
