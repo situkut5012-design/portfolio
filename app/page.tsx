@@ -8,18 +8,17 @@ type Task = {
   id: number;
   text: string;
   completed: boolean;
-  priority: Priority; // ★追加：優先度プロパティ
+  priority: Priority;
 };
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
   const [input, setInput] = useState('');
-  const [priority, setPriority] = useState<Priority>('medium'); // ★追加：入力時の優先度（初期値: 中）
+  const [priority, setPriority] = useState<Priority>('medium');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
 
-  // 1. ページがブラウザに表示された瞬間（マウント後）に保存データを読み込む
   useEffect(() => {
     const savedTasks = localStorage.getItem('portfolio_tasks');
     if (savedTasks) {
@@ -38,7 +37,6 @@ export default function Home() {
     setIsInitialized(true);
   }, []);
 
-  // 2. tasksやテーマが変わったら自動保存する
   useEffect(() => {
     if (!isInitialized) return;
     localStorage.setItem('portfolio_tasks', JSON.stringify(tasks));
@@ -53,12 +51,12 @@ export default function Home() {
       id: Date.now(),
       text: input,
       completed: false,
-      priority: priority, // 優先度を持たせる
+      priority: priority,
     };
 
     setTasks([...tasks, newTask]);
     setInput('');
-    setPriority('medium'); // 入力後にリセット
+    setPriority('medium');
   };
 
   const toggleTask = (id: number) => {
@@ -85,7 +83,6 @@ export default function Home() {
     return true;
   });
 
-  // 優先度の見た目を定義するヘルパー
   const priorityConfig = {
     high: { label: '高', bg: 'bg-red-100 text-red-700 dark:bg-red-900/60 dark:text-red-300' },
     medium: { label: '中', bg: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/60 dark:text-yellow-300' },
@@ -121,6 +118,20 @@ export default function Home() {
           </p>
         </div>
 
+        {/* ★追加：スキル・経歴ページへ移動するボタン */}
+        <div className="mb-3">
+          <a
+            href="/skills"
+            className={`block text-center font-semibold py-2 px-4 rounded-lg text-sm transition border ${
+              isDarkMode 
+                ? 'bg-blue-900/40 text-blue-300 border-blue-700 hover:bg-blue-900/70' 
+                : 'bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100'
+            }`}
+          >
+            ⚡ 習得スキル・経歴ページを見る
+          </a>
+        </div>
+
         {/* 📁 1日目のHTML版へ移動するボタン */}
         <div className="mb-6">
           <a
@@ -139,7 +150,6 @@ export default function Home() {
         <div className={`mt-8 pt-6 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-100'}`}>
           <h2 className={`text-base font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>📝 本日の学習タスク管理</h2>
           
-          {/* ★追加：入力フォームと優先度選択のセレクトボックス */}
           <form onSubmit={addTask} className="flex gap-2 mb-4">
             <input
               type="text"
@@ -234,7 +244,6 @@ export default function Home() {
                   }`}
                 >
                   <div className="flex items-center gap-3 flex-1">
-                    {/* ★追加：優先度バッジ */}
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${currentPriority.bg}`}>
                       {currentPriority.label}
                     </span>
