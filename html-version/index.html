@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>私のポートフォリオ</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 25px;
+        }
+        .section h2 {
+            font-size: 16px;
+            color: #3498db;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        p, li {
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        .badge {
+            display: inline-block;
+            background: #e1f0fe;
+            color: #3498db;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>私について</h1>
+        <div class="subtitle">1ヶ月で自走できる開発者へ挑戦中</div>
+
+        <div class="section">
+            <h2>🎯 目指す方向</h2>
+            <p>自分の頭でロジックを考え、クリエイティブに価値を創り出すWebエンジニアを目指しています。将来的なフルリモート勤務を見据え、確実なスキルを習得中です。</p>
+        </div>
+
+        <div class="section">
+            <h2>🛠️ 現在学習中のスキル</h2>
+            <div>
+                <span class="badge">HTML / CSS</span>
+                <span class="badge">JavaScript</span>
+                <span class="badge">TypeScript</span>
+                <span class="badge">Git / GitHub</span>
+                <span class="badge">VS Code</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚀 今後の目標</h2>
+            <ul>
+                <li>12月中の実務スタート（開発現場への切替）</li>
+                <li>実用的なWebアプリケーション（ポートフォリオ）の完成</li>
+                <li>日々のコードの継続的なアウトプット</li>
+            </ul>
+        </div>
+    </div>
+<div class="section" style="text-align: center; margin-top: 30px;">
+        <button id="action-btn" style="background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-size: 14px; cursor: pointer;">今日の意気込みを表示する</button>
+        <p id="message" style="margin-top: 15px; font-weight: bold; color: #2c3e50;"></p>
+    </div>
+
+    <script>
+        const btn = document.getElementById('action-btn');
+        const message = document.getElementById('message');
+
+        const messages = [
+            "「今日できる小さな前進が、1ヶ月後の大きな成果につながる！」",
+            "「エラーが出たら成長のチャンス。今日もコードを書こう！」",
+            "「自分のペースで、着実に自走スキルを身につけていこう！」",
+            "「未来のフルリモート生活に向けて、一歩前進！」"
+        ];
+
+        btn.addEventListener('click', () => {
+            // ランダムにメッセージを1つ選ぶ
+            const randomIndex = Math.floor(Math.random() * messages.length);
+            message.textContent = messages[randomIndex];
+        });
+    </script>
+
+<!-- ToDoリスト機能 -->
+    <div class="section" style="margin-top: 30px; border-top: 2px solid #ecf0f1; padding-top: 20px;">
+        <h2>📝 今日の学習タスク管理</h2>
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <input type="text" id="todo-input" placeholder="やることを入力（例：JSの復習）" style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 5px;">
+            <button id="add-btn" style="background: #2ecc71; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold;">追加</button>
+        </div>
+        <ul id="todo-list" style="list-style: none; padding: 0;"></ul>
+    </div>
+
+    <script>
+        const todoInput = document.getElementById('todo-input');
+        const addBtn = document.getElementById('add-btn');
+        const todoList = document.getElementById('todo-list');
+
+        addBtn.addEventListener('click', () => {
+            const text = todoInput.value.trim();
+            if (text === '') return; // 空欄なら何もしない
+
+            // 新しいリスト項目（li）と削除ボタンをJavaScriptで生成
+            const li = document.createElement('li');
+            li.style.cssText = 'display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; padding: 8px 12px; margin-bottom: 8px; border-radius: 5px; border-left: 4px solid #2ecc71;';
+            
+            const span = document.createElement('span');
+            span.textContent = text;
+
+            const delBtn = document.createElement('button');
+            delBtn.textContent = '完了';
+            delBtn.style.cssText = 'background: #e74c3c; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;';
+            
+            // 「完了」ボタンを押したらその項目を消す
+            // 「完了」ボタンを押したら取り消し線を引き、文字色を薄くする
+            delBtn.addEventListener('click', () => {
+                span.style.textDecoration = 'line-through';
+                span.style.color = '#95a5a6';
+                delBtn.textContent = '済';
+                delBtn.style.background = '#95a5a6';
+            });
+
+            li.appendChild(span);
+            li.appendChild(delBtn);
+            todoList.appendChild(li);
+
+            todoInput.value = ''; // 入力欄を空に戻す
+        });
+    </script>
+
+</body>
+</html>
