@@ -93,6 +93,28 @@
             </ul>
         </div>
     </div>
+<div class="section" style="text-align: center; margin-top: 30px;">
+        <button id="action-btn" style="background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-size: 14px; cursor: pointer;">今日の意気込みを表示する</button>
+        <p id="message" style="margin-top: 15px; font-weight: bold; color: #2c3e50;"></p>
+    </div>
 
+    <script>
+        const btn = document.getElementById('action-btn');
+        const message = document.getElementById('message');
+
+        const messages = [
+            "「今日できる小さな前進が、1ヶ月後の大きな成果につながる！」",
+            "「エラーが出たら成長のチャンス。今日もコードを書こう！」",
+            "「自分のペースで、着実に自走スキルを身につけていこう！」",
+            "「未来のフルリモート生活に向けて、一歩前進！」"
+        ];
+
+        btn.addEventListener('click', () => {
+            // ランダムにメッセージを1つ選ぶ
+            const randomIndex = Math.floor(Math.random() * messages.length);
+            message.textContent = messages[randomIndex];
+        });
+    </script>
+    
 </body>
 </html>
