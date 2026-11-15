@@ -18,8 +18,6 @@ export default function Home() {
   const [priority, setPriority] = useState<Priority>('medium');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
-  
-  // ★追加：検索キーワードの状態
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
@@ -79,8 +77,11 @@ export default function Home() {
   };
 
   const remainingCount = tasks.filter((task) => !task.completed).length;
+  const completedCount = tasks.length - remainingCount;
 
-  // ★変更：タブの絞り込み ＋ キーワード検索を同時に行うロジック
+  // ★追加：進捗率（パーセンテージ）の計算（タスクが0件の場合は0%にする）
+  const progressPercent = tasks.length > 0 ? Math.round((completedCount / tasks.length) * 100) : 0;
+
   const filteredTasks = tasks.filter((task) => {
     const matchesFilter =
       filter === 'all'
@@ -195,7 +196,7 @@ export default function Home() {
             </button>
           </form>
 
-          {/* ★追加：キーワード検索用の入力ボックス */}
+          {/* キーワード検索用の入力ボックス */}
           <div className="mb-4">
             <input
               type="text"
@@ -208,6 +209,20 @@ export default function Home() {
                   : 'bg-white border-gray-300 text-gray-800'
               }`}
             />
+          </div>
+
+          {/* ★追加：進捗率プログレスバーの表示エリア */}
+          <div className={`mb-4 p-3 rounded-lg border ${isDarkMode ? 'bg-gray-700/50 border-gray-600' : 'bg-gray-50 border-gray-200'}`}>
+            <div className="flex justify-between items-center text-xs mb-1.5 font-semibold">
+              <span className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>達成率: {progressPercent}%</span>
+              <span className={isDarkMode ? 'text-gray-400' : 'text-gray-500'}>{completedCount} / {tasks.length} 完了</span>
+            </div>
+            <div className={`w-full h-2 rounded-full overflow-hidden ${isDarkMode ? 'bg-gray-600' : 'bg-gray-200'}`}>
+              <div 
+                className="h-full bg-blue-600 transition-all duration-300 rounded-full" 
+                style={{ width: `${progressPercent}%` }}
+              ></div>
+            </div>
           </div>
 
           {/* タブ切り替えボタン */}
@@ -240,7 +255,7 @@ export default function Home() {
                   : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
               }`}
             >
-              完了済み ({tasks.length - remainingCount})
+              完了済み ({completedCount})
             </button>
           </div>
 
