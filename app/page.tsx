@@ -2,16 +2,6 @@
 
 import { useState } from 'react';
 
-{/* HTML版へ移動するボタン */}
-<div className="mb-6 text-center">
-  <a
-    href="/portfolio/html-version/" // ※ご自身のGitHubリポジトリ名に合わせて調整
-    className="inline-block bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg text-sm transition shadow-sm"
-  >
-    📁 1日目のHTML/JS版ポートフォリオを見る
-  </a>
-</div>
-
 type Task = {
   id: number;
   text: string;
@@ -22,22 +12,20 @@ export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [input, setInput] = useState('');
 
-  // タスクを追加する関数
   const addTask = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim() === '') return;
 
     const newTask: Task = {
-      id: Date.now(), // 現在時刻をユニークなIDにする
+      id: Date.now(),
       text: input,
       completed: false,
     };
 
-    setTasks([...tasks, newTask]); // 既存のリストに新しいタスクを追加
-    setInput(''); // 入力欄を空にする
+    setTasks([...tasks, newTask]);
+    setInput('');
   };
 
-  // タスクの完了状態を切り替える関数
   const toggleTask = (id: number) => {
     setTasks(
       tasks.map((task) =>
@@ -46,7 +34,6 @@ export default function Home() {
     );
   };
 
-  // タスクを削除する関数
   const deleteTask = (id: number) => {
     setTasks(tasks.filter((task) => task.id !== id));
   };
@@ -65,7 +52,17 @@ export default function Home() {
           </p>
         </div>
 
-        {/* ここからToDoリスト機能 */}
+        {/* 📁 1日目のHTML版へ移動するボタン */}
+        <div className="mb-6">
+          <a
+            href="/html-version/index.html"
+            className="block text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg text-sm transition border"
+          >
+            📁 1日目のHTML/JS版ポートフォリオを見る
+          </a>
+        </div>
+
+        {/* ToDoリスト機能 */}
         <div className="mt-8 pt-6 border-t border-gray-100">
           <h2 className="text-base font-semibold text-gray-800 mb-4">📝 本日の学習タスク管理</h2>
           
