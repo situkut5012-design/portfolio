@@ -2,11 +2,97 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>私のポートフォリオ</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 25px;
+        }
+        .section h2 {
+            font-size: 16px;
+            color: #3498db;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        p, li {
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        .badge {
+            display: inline-block;
+            background: #e1f0fe;
+            color: #3498db;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
-<body style="font-family: sans-serif; text-align: center; margin-top: 50px;">
-    <h1>エンジニアへの挑戦</h1>
-    <p>今日から1ヶ月で、自走できる開発者としての第一歩を踏み出します。</p>
-    <p>自分のペースで、頭を使うクリエイティブな仕事を手に入れます。</p>
+<body>
+
+    <div class="container">
+        <h1>私について</h1>
+        <div class="subtitle">1ヶ月で自走できる開発者へ挑戦中</div>
+
+        <div class="section">
+            <h2>🎯 目指す方向</h2>
+            <p>自分の頭でロジックを考え、クリエイティブに価値を創り出すWebエンジニアを目指しています。将来的なフルリモート勤務を見据え、確実なスキルを習得中です。</p>
+        </div>
+
+        <div class="section">
+            <h2>🛠️ 現在学習中のスキル</h2>
+            <div>
+                <span class="badge">HTML / CSS</span>
+                <span class="badge">JavaScript</span>
+                <span class="badge">TypeScript</span>
+                <span class="badge">Git / GitHub</span>
+                <span class="badge">VS Code</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚀 今後の目標</h2>
+            <ul>
+                <li>12月中の実務スタート（開発現場への切替）</li>
+                <li>実用的なWebアプリケーション（ポートフォリオ）の完成</li>
+                <li>日々のコードの継続的なアウトプット</li>
+            </ul>
+        </div>
+    </div>
+
 </body>
 </html>
