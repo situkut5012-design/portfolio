@@ -12,9 +12,10 @@ export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
   const [input, setInput] = useState('');
-  
-  // ★追加：ダークモードの状態（初期値はfalse＝ライトモード）
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // ★追加：表示フィルターの状態（'all': すべて, 'active': 未完了, 'completed': 完了済み）
+  const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
 
   // 1. ページがブラウザに表示された瞬間（マウント後）に保存データを読み込む
   useEffect(() => {
@@ -27,7 +28,6 @@ export default function Home() {
       }
     }
 
-    // ついでに保存されていたダークモード設定があれば復元する
     const savedTheme = localStorage.getItem('portfolio_dark_mode');
     if (savedTheme === 'true') {
       setIsDarkMode(true);
@@ -75,11 +75,18 @@ export default function Home() {
 
   const remainingCount = tasks.filter((task) => !task.completed).length;
 
+  // ★追加：現在のフィルターに応じてタスクを絞り込むロジック
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === 'active') return !task.completed;
+    if (filter === 'completed') return task.completed;
+    return true; // 'all' の場合はすべて返す
+  });
+
   return (
     <main className={`min-h-screen py-12 px-4 flex justify-center transition-colors duration-300 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-800'}`}>
       <div className={`max-w-xl w-full p-8 rounded-xl shadow-md transition-colors duration-300 ${isDarkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white'}`}>
         
-        {/* ヘッダーエリア（タイトル ＆ ダークモード切替ボタン） */}
+        {/* ヘッダーエリア */}
         <div className="flex justify-between items-start mb-2">
           <div>
             <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>私のポートフォリオ（Next.js版）</h1>
@@ -142,11 +149,45 @@ export default function Home() {
             </button>
           </form>
 
+          {/* ★追加：タブ切り替えボタン（すべて / 未完了 / 完了済み） */}
+          <div className="flex gap-1 mb-4 bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
+            <button
+              onClick={() => setFilter('all')}
+              className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition ${
+                filter === 'all'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+              }`}
+            >
+              すべて ({tasks.length})
+            </button>
+            <button
+              onClick={() => setFilter('active')}
+              className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition ${
+                filter === 'active'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+              }`}
+            >
+              未完了 ({remainingCount})
+            </button>
+            <button
+              onClick={() => setFilter('completed')}
+              className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition ${
+                filter === 'completed'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+              }`}
+            >
+              完了済み ({tasks.length - remainingCount})
+            </button>
+          </div>
+
           {tasks.length > 0 && (
             <div className={`flex justify-between items-center mb-4 text-xs p-2.5 rounded-lg border ${
               isDarkMode ? 'bg-gray-700 border-gray-600 text-gray-300' : 'bg-gray-50 border-gray-200 text-gray-500'
             }`}>
-              <span>残りタスク: <strong className="text-blue-400">{remainingCount}件</strong> / 全体: {tasks.length}件</span>
+              <span>残りタスク: <strong className="text-blue-400">{remainingCount}件</strong></span>
               <button
                 onClick={clearCompletedTasks}
                 className="hover:text-red-400 transition underline"
@@ -157,7 +198,8 @@ export default function Home() {
           )}
 
           <ul className="space-y-2">
-            {tasks.map((task) => (
+            {/* ★変更：tasks ではなく filteredTasks を表示する */}
+            {filteredTasks.map((task) => (
               <li
                 key={task.id}
                 className={`flex justify-between items-center px-4 py-3 rounded-lg border transition-colors ${
@@ -200,8 +242,8 @@ export default function Home() {
                 </div>
               </li>
             ))}
-            {tasks.length === 0 && (
-              <p className={`text-center text-sm py-4 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>タスクはまだありません。上のフォームから追加してみよう！</p>
+            {filteredTasks.length === 0 && (
+              <p className={`text-center text-sm py-4 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>表示するタスクはありません。</p>
             )}
           </ul>
         </div>
