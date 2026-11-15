@@ -23,7 +23,7 @@ export default function Home() {
         console.error('データの読み込みに失敗しました', e);
       }
     }
-    setIsInitialized(true); // 初期化完了フラグを立てる
+    setIsInitialized(true);
   }, []);
 
   // 2. 初期化が終わったあとに、tasksが変更されたら自動保存する
@@ -57,6 +57,14 @@ export default function Home() {
   const deleteTask = (id: number) => {
     setTasks(tasks.filter((task) => task.id !== id));
   };
+
+  // ★追加：完了済みのタスクをすべて削除する関数
+  const clearCompletedTasks = () => {
+    setTasks(tasks.filter((task) => !task.completed));
+  };
+
+  // ★追加：未完了のタスク数を計算
+  const remainingCount = tasks.filter((task) => !task.completed).length;
 
   return (
     <main className="min-h-screen bg-gray-50 py-12 px-4 flex justify-center">
@@ -101,6 +109,19 @@ export default function Home() {
               追加
             </button>
           </form>
+
+          {/* ★追加：残りタスク数と一括削除ボタンを表示するエリア */}
+          {tasks.length > 0 && (
+            <div className="flex justify-between items-center mb-4 text-xs text-gray-500 bg-gray-50 p-2.5 rounded-lg border">
+              <span>残りタスク: <strong className="text-blue-600">{remainingCount}件</strong> / 全体: {tasks.length}件</span>
+              <button
+                onClick={clearCompletedTasks}
+                className="hover:text-red-600 transition underline"
+              >
+                完了済みのタスクを一括削除
+              </button>
+            </div>
+          )}
 
           <ul className="space-y-2">
             {tasks.map((task) => (
