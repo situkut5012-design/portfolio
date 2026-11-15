@@ -147,8 +147,12 @@
             delBtn.style.cssText = 'background: #e74c3c; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;';
             
             // 「完了」ボタンを押したらその項目を消す
+            // 「完了」ボタンを押したら取り消し線を引き、文字色を薄くする
             delBtn.addEventListener('click', () => {
-                todoList.removeChild(li);
+                span.style.textDecoration = 'line-through';
+                span.style.color = '#95a5a6';
+                delBtn.textContent = '済';
+                delBtn.style.background = '#95a5a6';
             });
 
             li.appendChild(span);
